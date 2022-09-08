@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-tag">
+	
+	<insert id="insert" parameterType="lx.edu.team2.vo.TagVO">
+		insert into post_tags(post_tag, post_no)
+		values( #{postTag}, #{postNo});
+	</insert>
+	
+	<select id="deleteTag" parameterType="int">
+		delete from post_tags
+		where post_no = #{postId}
+	</select>
+	
+	<select id="selectBypostTag" resultType="lx.edu.team2.vo.TagVO" parameterType="java.util.HashMap">
+		select *
+		from post_tags 
+		where post_tag = #{postTag}
+		group by post_no
+		order by post_no desc
+		limit #{pageNation}, 5
+	</select>
+	
+	<select id="getTagByPostId" resultType="int" parameterType="int">
+		select count(*)
+		from post_tags 
+		where post_no like #{postId}
+	</select>
+	
+	
+</mapper>
+				

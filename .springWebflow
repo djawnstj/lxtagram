@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webflow-project-description>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.9.17.202106210642-RELEASE]]></pluginVersion>
+	<configs>
+		<config>
+			<file>src/main/resources/good.xml</file>
+			<name><![CDATA[good]]></name>
+		</config>
+	</configs>
+</webflow-project-description>

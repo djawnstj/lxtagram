@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-follow">
+
+	<insert id="getFollower" parameterType="lx.edu.team2.vo.FollowVO">
+		insert into follows(mem_id, following)
+		value (#{memId}, #{following})
+	</insert>
+
+	<select id="getFollowing" resultType="lx.edu.team2.vo.FollowVO">
+		select *
+		from follows
+		where forl_id = #{folId}
+	</select>
+	
+	<insert id="dofollow" parameterType="lx.edu.team2.vo.FollowVO">
+		insert into follows(mem_id, following)
+		value (#{memId}, #{following})
+	</insert>
+	
+	<delete id="dounfollow" parameterType="lx.edu.team2.vo.FollowVO">
+		delete
+		from follows
+		where following = #{following} and mem_id = #{memId}
+	</delete>
+	
+	<select id="followCheck" parameterType="lx.edu.team2.vo.FollowVO" resultType="int">
+		select count(*)
+		from follows
+		where following = #{following} and mem_id = #{memId}
+	</select>
+	
+	<select id="counterFollowCheck" parameterType="lx.edu.team2.vo.FollowVO" resultType="int">
+		select count(*)
+		from follows
+		where following = #{following} and mem_id = #{memId}
+	</select>
+	
+	<select id="getCountFollowing" parameterType="String" resultType="int">
+		select count(*)
+		from follows
+		where mem_id = #{memId}
+	</select>
+	<select id="getCountFollower" parameterType="String" resultType="int">
+		select count(*)
+		from follows
+		where following = #{memId}
+	</select>
+	
+	<delete id="deleteFollowing" parameterType="String">
+	delete from follows
+	where mem_id = #{memId}
+	</delete>
+	
+	<delete id="deleteFollower" parameterType="String">
+	delete from follows
+	where following = #{memId}
+	</delete>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-post">
+
+	<select id="getPostList" resultType="lx.edu.team2.vo.PostVO" parameterType="java.util.HashMap">
+<!-- 		select *
+		from posts
+		order by post_id desc
+		limit #{pageNation}, 5
+		 -->
+		SELECT * FROM posts
+		JOIN follows
+		ON posts.mem_id = follows.following where follows.mem_id = #{memId}
+		order by post_id desc
+		limit #{pageNation}, 5
+	</select>
+
+	<select id="explorePost" resultType="lx.edu.team2.vo.PostVO" parameterType="int">
+		select *
+		from posts
+		order by rand()
+		limit #{pageNation}, 21
+	</select>
+	
+	<insert id="addPost" parameterType="lx.edu.team2.vo.PostVO" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id">
+		insert into posts(post, post_img, mem_id, post_time, addr_info, addr_area)
+		values(#{post}, #{postImg}, #{memId}, #{postTime}, #{addrInfo}, #{addrArea})
+	</insert>
+	
+	<select id="searchPostId" resultType="lx.edu.team2.vo.PostVO" parameterType="String">
+		select *
+		from posts 
+		where mem_id = #{memId}
+	</select>
+
+	<update id="updatePost" parameterType="lx.edu.team2.vo.PostVO">
+			update posts
+		<set>
+			<if test="post != null">post=#{post},</if>
+			<if test="postTime != null">post_time=#{postTime},</if>
+			<if test="addrInfo != null">addr_info=#{addrInfo},</if>
+			<if test="addrArea != null">addr_area=#{addrArea},</if>
+		</set>
+		where post_id = ${postId};
+	</update>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE from posts where post_id=#{postId};
+	</delete>
+	
+	<select id="getPostPage" resultType="lx.edu.team2.vo.PostVO">
+		select *
+		from posts
+		where post_id = #{postId}
+	</select>
+	
+	<select id="serachPostByTag" resultType="lx.edu.team2.vo.PostVO" parameterType="int">
+		select *
+		from posts
+		where post_id = #{postId}
+	</select>
+	
+	<select id="serachPostByArea" resultType="lx.edu.team2.vo.PostVO" parameterType="java.util.HashMap">
+		select *
+		from posts
+		where addr_area = #{addrArea}
+		order by post_id desc
+		limit #{pageNation}, 5
+	</select>
+	
+	<select id="serachPostByLocation" resultType="lx.edu.team2.vo.PostVO" parameterType="java.util.HashMap">
+		select *
+		from posts
+		where addr_info = #{addrInfo}
+		order by post_id desc
+		limit #{pageNation}, 5
+	</select>
+	
+	<select id="serachPostByContent" resultType="lx.edu.team2.vo.PostVO" parameterType="lx.edu.team2.vo.PostVO">
+		select *
+		from posts
+		where post = %#{post}%
+	</select>
+
+</mapper>

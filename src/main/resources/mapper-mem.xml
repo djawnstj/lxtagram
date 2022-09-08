@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-mem">
+
+<!-- 	입력한 사용자 정보(아이디 비번 전화번호 생일 이메일 자기소개 이미지) 데이터베이스에 넣기 -->
+	<insert id="register" parameterType="lx.edu.team2.vo.MemVO">
+		insert into members(mem_id, mem_pw ,mem_name, mem_phone,  mem_email, mem_introduce, mem_img)
+			values(#{memId}, #{memPw}, #{memName}, #{memPhone}, #{memEmail}, #{memIntroduce}, #{memImg})
+	</insert>
+	
+	<select id="checkMemPw" parameterType="String" resultType="String">
+		select mem_pw
+		from members
+		where mem_id = #{memId}
+	</select>
+	
+	<select id="getMem" parameterType="String" resultType="lx.edu.team2.vo.MemVO">
+		select *
+		from members
+		where mem_id = #{memId}
+	</select>
+	
+	<select id="getRandomMem" parameterType="String" resultType="lx.edu.team2.vo.MemVO">
+		select * 
+		from members
+		where mem_id != #{memId}
+		order by rand() limit 5 
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		delete
+		from members
+		where mem_id = #{memId}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultType="lx.edu.team2.vo.MemVO">
+		select	*
+		from members
+		where mem_id = #{memId}
+	</select>
+	
+	<update id="update" parameterType="lx.edu.team2.vo.MemVO">
+		update members
+		<set>
+			<if test="memPw != null">mem_pw=#{memPw},</if>
+			<if test="memName != null">mem_name=#{memName},</if>
+			<if test="memPhone != null">mem_phone=#{memPhone},</if>
+			<if test="memEmail != null">mem_email=#{memEmail},</if>
+			<if test="memIntroduce != null">mem_introduce=#{memIntroduce},</if>
+			<if test="memImg != null">mem_img=#{memImg},</if>
+		</set>
+		where mem_id = #{memId}
+	</update>
+	
+	<select id="getPostById" parameterType="String" resultType="lx.edu.team2.vo.PostVO">
+		select *
+		from posts
+		where mem_id = #{memId}
+		order by post_id desc
+	</select>
+	
+	<select id="postCount" parameterType="String" resultType="int">
+		select count(*)
+		from posts
+		where mem_id = #{memId}
+	</select>
+
+	<select id="checkMemId" parameterType="String" resultType="int">
+		select count(*)
+		from members
+		where mem_id = #{memId}
+	</select>
+	
+	<select id="searchMem" parameterType="String" resultType="lx.edu.team2.vo.MemVO">
+		<bind name="bindMemId" value="'%' + memId + '%'" />
+		select *
+		from members
+		where mem_id != #{memId} and mem_id like #{bindMemId}
+		order by rand()
+	</select>
+
+</mapper>
